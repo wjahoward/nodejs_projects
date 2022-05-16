@@ -1,5 +1,6 @@
 const Task = require('../models/Task');
 const asyncWrapper = require('../middleware/async');
+const {createCustomError} = require('../errors/custom-error');
 
 const getAllTasks = asyncWrapper(async (req, res) => {
     const tasks = await Task.find();
@@ -19,30 +20,30 @@ const createTask = asyncWrapper(async (req, res) => {
     return res.status(201).json({task});
 });
 
-const getSingleTask = asyncWrapper(async (req, res) => {
+const getSingleTask = asyncWrapper(async (req, res, next) => {
     const {taskID} = req.params;
     console.log(taskID);
     const singleTask = await Task.findById(taskID);
     // is the same as the above line: const singleTask = await Task.findOne({_id: taskID});
         
     if (!singleTask) {
-        return res.status(404).json({ msg: `Task with id ${taskID} not found!`});
+        return next(createCustomError(`No task with id : ${taskID}`), 404);
     }
         
     return res.status(200).json({ singleTask });
 });
 
-const deleteTask = asyncWrapper(async (req, res) => {
+const deleteTask = asyncWrapper(async (req, res, next) => {
     const {taskID} = req.params;
     const singleTask = await Task.findByIdAndDelete(taskID);
         
     if (!singleTask) {
-        return res.status(404).json({ msg: `No task with id : ${taskID}`});
+        return next(createCustomError(`No task with id : ${taskID}`), 404);
     }
 
     return res.status(200).json({ msg: "deleted task successfully" });});
 
-const updateTask = asyncWrapper(async (req, res) => {
+const updateTask = asyncWrapper(async (req, res, next) => {
     const {taskID} = req.params;
 
     const singleTask = await Task.findOneAndUpdate({_id: taskID}, req.body, {
@@ -51,7 +52,7 @@ const updateTask = asyncWrapper(async (req, res) => {
     });
 
     if (!singleTask) {
-        return res.status(404).json({ msg: `No task with id : ${taskID}`});
+        return next(createCustomError(`No task with id : ${taskID}`), 404);
     }
 
     return res.status(200).json( {msg: `You have updated the task successfully`});
