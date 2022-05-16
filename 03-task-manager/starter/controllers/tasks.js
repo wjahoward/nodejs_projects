@@ -29,18 +29,28 @@ const getSingleTask = async (req, res) => {
         }
         
         return res.status(200).json({ singleTask });
-    } catch (err) {
+    } catch (err) { // it will come here when the length of the id is not the same as the standard id
         return res.status(500).json({msg: err});
     }
-    return res.json({id: req.params.id});
+};
+
+const deleteTask = async (req, res) => {
+    try {
+        const taskID = req.params.id;
+        const singleTask = await Task.findByIdAndDelete(taskID);
+        
+        if (!singleTask) {
+            return res.status(404).json({ msg: `No task with id : ${taskID}`});
+        }
+
+        return res.status(200).json({ msg: "deleted task successfully" });
+    } catch (err) {
+        return res.status(500).json( {msg: err} );
+    }
 };
 
 const updateTask = (req, res) => {
     return res.send('update task');
-};
-
-const deleteTask = (req, res) => {
-    return res.send('delete task');
 };
 
 module.exports = {
