@@ -20,7 +20,8 @@ const createTask = async (req, res) => {
 
 const getSingleTask = async (req, res) => {
     try {
-        const taskID = req.params.id;
+        const {taskID} = req.params;
+        console.log(taskID);
         const singleTask = await Task.findById(taskID);
         // is the same as the above line: const singleTask = await Task.findOne({_id: taskID});
         
@@ -36,7 +37,7 @@ const getSingleTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
     try {
-        const taskID = req.params.id;
+        const {taskID} = req.params;
         const singleTask = await Task.findByIdAndDelete(taskID);
         
         if (!singleTask) {
@@ -49,8 +50,23 @@ const deleteTask = async (req, res) => {
     }
 };
 
-const updateTask = (req, res) => {
-    return res.send('update task');
+const updateTask = async (req, res) => {
+    try {
+        const {taskID} = req.params;
+
+        const singleTask = await Task.findOneAndUpdate({_id: taskID}, req.body, {
+            new: true, // returning a new object instead of the old one
+            runValidators: true
+        });
+
+        if (!singleTask) {
+            return res.status(404).json({ msg: `No task with id : ${taskID}`});
+        }
+
+        return res.status(200).json( {msg: `You have updated the task successfully`});
+    } catch (err) {
+        return res.status(500).json({ msg: err });
+    }
 };
 
 module.exports = {
