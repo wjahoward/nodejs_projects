@@ -1,5 +1,5 @@
 require('dotenv').config();
-// async errors
+require('express-async-errors'); // we can set up our own async await without the need to create try-catch or own middlewares 
 
 // express
 const express = require('express');
