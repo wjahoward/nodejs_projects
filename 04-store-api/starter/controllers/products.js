@@ -6,7 +6,14 @@ const getAllProductsStatic = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-    const products = await Product.find(req.query);
+    const { feature } = req.query; // filter criteria
+    const queryObject = {};
+
+    if (feature) {
+        queryObject.feature = feature === 'true' ? true : false;
+    }
+
+    const products = await Product.find(queryObject);
     return res.status(200).json(products);
 };
 
