@@ -12,7 +12,7 @@ const getAllProductsStatic = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-    const { feature, company, name, sort } = req.query; // filter criteria
+    const { feature, company, name, sort, fields } = req.query; // filter criteria
     const queryObject = {};
 
     if (feature) {
@@ -34,6 +34,11 @@ const getAllProducts = async (req, res) => {
         result = result.sort(sortList);
     } else {
         result = result.sort('createdAt');
+    }
+
+    if (fields) {
+        const fieldsList = fields.split(',').join(' ');
+        result = result.select(fieldsList); // show only certain fields as prescribed by the user
     }
 
     const products = await result;
