@@ -27,7 +27,7 @@ const getAllProducts = async (req, res) => {
         queryObject.name = { $regex: name, $options: 'i' /* case insensitive */};
     }
 
-    // numeric filters
+    // numeric filters https://localhost:3000/api/v1/products?numericFilters=price>40,rating>=4.5
     if (numericFilters) {
         const operatorMap = {
           '>': '$gt',
@@ -46,6 +46,7 @@ const getAllProducts = async (req, res) => {
                 queryObject[field] = { [operator]: Number(value) };
             }
         });
+        console.log(filters);
     }
 
     let result = Product.find(queryObject);
