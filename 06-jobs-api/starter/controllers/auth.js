@@ -18,7 +18,7 @@ const register = async (req, res) => {
     // created on the front end. Can send back only the token
     // There are setups where the front end decodes the token
     // instead, instead of sending a name and userId (to decode the code)
-    const user = await User.create(tempUser);
+    const user = await User.create(req.body);
     const token = user.createJWT();
     res.status(StatusCodes.CREATED).json({ 
         user: { name: user.name },
