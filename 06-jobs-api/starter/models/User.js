@@ -29,4 +29,11 @@ UserSchema.pre('save', async () => { // extra middlware before creating the User
 
 });
 
+UserSchema.methods.createJWT = () => {
+    return jwt.sign({ userId: this._id, name: this._name }, 
+        'jwtSecret', {
+            expiresIn: '30d'
+        });
+};
+
 module.exports = mongoose.model('User', UserSchema);

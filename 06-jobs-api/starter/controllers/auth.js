@@ -14,13 +14,17 @@ const register = async (req, res) => {
         throw new BadRequestError('Please provide name, email and password');
     }
 
+    // the below codes are depended on the setup that have been
+    // created on the front end. Can send back only the token
+    // There are setups where the front end decodes the token
+    // instead, instead of sending a name and userId (to decode the code)
     const user = await User.create(tempUser);
-    const token = jwt.sign({userId: user._id, name: user.name}, 'jwtSecret', {
-        expiresIn: '30d',
-    });
-    res.status(StatusCodes.CREATED).json({ token });
+    const token = user.createJWT();
+    res.status(StatusCodes.CREATED).json({ 
+        user: { name: user.name },
+        token });
 };
-
+   
 const login = async (req, res) => {
     res.send('login user');
 };
