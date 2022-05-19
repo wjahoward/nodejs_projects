@@ -21,4 +21,12 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
+UserSchema.pre('save', async () => { // extra middlware before creating the User
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    // next(); // the latest version no need require next()
+
+});
+
 module.exports = mongoose.model('User', UserSchema);
