@@ -4,6 +4,7 @@ const {createCustomError} = require('../errors/custom-error');
 
 const getAllTasks = asyncWrapper(async (req, res) => {
     const tasks = await Task.find();
+    console.log("get tasks");
     return res.status(200).json({ tasks });
     // the response can also be set up in this manner,
     // can be flexible:
@@ -27,7 +28,8 @@ const getSingleTask = asyncWrapper(async (req, res, next) => {
     // is the same as the above line: const singleTask = await Task.findOne({_id: taskID});
         
     if (!singleTask) {
-        return next(createCustomError(`No task with id : ${taskID}`), 404);
+        throw Error('no task found');
+        // return next(createCustomError(`No task with id : ${taskID}`), 404);
     }
         
     return res.status(200).json({ singleTask });

@@ -1,3 +1,8 @@
+// when there is an error along the way, the error 
+// will be automatically passed to the middleware 
+// (need to create manually). Then, need to return back
+// the json data i.e. error-handler.js
+require('express-async-errors'); 
 const express = require('express');
 const app = express();
 const tasks = require('./routes/tasks');
@@ -17,7 +22,7 @@ app.get('/hello', (req, res) => {
 app.use('/api/v1/tasks', tasks);
 
 app.use(notFound);
-app.use(errorHandlerMiddleware);
+app.use(errorHandlerMiddleware); // this is still required to have the next() after passing the erorr message 
 
 const port = 3000;
 

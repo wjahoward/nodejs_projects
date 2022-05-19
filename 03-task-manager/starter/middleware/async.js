@@ -6,8 +6,10 @@
 const asyncWrapper = (fn) => {
     return async (req, res, next) => {
         try {
+            console.log("async wrapper");
             await fn(req, res, next);
         } catch (error) {
+            console.log("test error");
             next(error);
         }
     };
