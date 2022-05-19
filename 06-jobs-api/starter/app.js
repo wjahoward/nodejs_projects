@@ -1,3 +1,5 @@
+// main code to start up the server
+
 require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
