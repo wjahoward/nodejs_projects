@@ -1,10 +1,24 @@
 const { CustomAPIError } = require('../errors')
 const { StatusCodes } = require('http-status-codes')
 const errorHandlerMiddleware = (err, req, res, next) => {
-  if (err instanceof CustomAPIError) {
+  
+  let customError = {
+    // set default error
+    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
+    msg: err.message || "Something went wrong, try again later"
+  };
+  
+  if (err instanceof CustomAPIError) { // examples that will pass to here include logging in using invalid credentials
     return res.status(err.statusCode).json({ msg: err.message })
   }
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err })
+
+  if (err.code && err.code == 11000) {
+    customError.statusCode = 400;
+    customError.msg = `Email: ${err.keyValue.email} has already exist`;
+  }
+
+  // return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
+  return res.status(customError.statusCode).json(customError.msg); // make it more generic
 }
 
 module.exports = errorHandlerMiddleware
