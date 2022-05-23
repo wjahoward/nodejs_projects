@@ -37,16 +37,23 @@ const register = async (req, res) => {
     };
     const token = createJWT(tokenUser);
 
-    return res.status(StatusCodes.CREATED).json({user: tokenUser, token: token});
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + oneDay)
+    });
+
+    res.status(StatusCodes.CREATED).json({user: tokenUser, token: token});
 
 };
 
 const login = async (req, res) => {
-    return res.send('login user');
+    res.send('login user');
 };
 
 const logout = async (req, res) => {
-    return res.send('logout user');
+    res.send('logout user');
 };
 
 module.exports = {
