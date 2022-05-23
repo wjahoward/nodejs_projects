@@ -20,7 +20,7 @@ const errorHandlerMiddlware = require('./middleware/error-handler');
 
 app.use(morgan('tiny')); // allows one to knoow which routes have been accessed
 app.use(express.json());
-app.use(cookieParser()); // access the cookie
+app.use(cookieParser(process.env.JWT_SECRET)); // access the cookie, want to pass in the secret to sign the cookies
 
 app.get('/', (req, res) => {
     return res.send("hi world");

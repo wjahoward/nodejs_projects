@@ -36,7 +36,7 @@ const register = async (req, res) => {
         role: user.role
     };
 
-    attachCookieToResponse({res, user:tokenUser});
+    attachCookieToResponse(res, tokenUser);
 
 };
 
