@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const User = require('../models/User');
 const {StatusCodes} = require('http-status-codes');
-const {CustomError, BadRequestError} = require('../errors');
+const {BadRequestError, UnauthenticatedError} = require('../errors');
 const {attachCookieToResponse} = require("../utils");
 
 const register = async (req, res) => {
@@ -41,7 +41,29 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    res.send('login user');
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        throw new BadRequestError("Please include your email and password");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (password && !user.comparePassword(password)) {
+        throw new UnauthenticatedError("Invalid password");
+    }
+
+    if (!user) {
+        throw new UnauthenticatedError("Invalid credentials");
+    }
+
+    const tokenUser = {
+        name: user.name,
+        userId: user._id,
+        role: user.role
+    };
+
+    attachCookieToResponse(res, tokenUser);
 };
 
 const logout = async (req, res) => {
