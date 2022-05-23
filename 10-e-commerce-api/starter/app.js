@@ -6,6 +6,7 @@ const app = express();
 
 // rest of the packages
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 // connect to db
 const connectDB = require('./db/connect');
@@ -19,6 +20,7 @@ const errorHandlerMiddlware = require('./middleware/error-handler');
 
 app.use(morgan('tiny')); // allows one to knoow which routes have been accessed
 app.use(express.json());
+app.use(cookieParser()); // access the cookie
 
 app.get('/', (req, res) => {
     return res.send("hi world");
