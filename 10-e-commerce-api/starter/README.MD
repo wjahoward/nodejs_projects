@@ -57,11 +57,11 @@
 
 #### Register Controller
 
-- [] create user
-- [] send response with entire user (only while testing)
-- [] check if email already in use (schema and controller)
-- [] ignore 'role'
-- [] alternative 'admin' setup
+- [X] create user
+- [X] send response with entire user (only while testing)
+- [X] check if email already in use (schema and controller)
+- [X] ignore 'role'
+- [X] alternative 'admin' setup
 
 #### Handle Password
 
