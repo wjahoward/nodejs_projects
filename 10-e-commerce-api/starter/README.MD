@@ -4,8 +4,8 @@
 
 #### Setup Basic Express Server
 
-- [] import express and assign to variable
-- [] setup start port variable (5000) and start function
+- [X] import express and assign to variable
+- [X] setup start port variable (5000) and start function
 
 #### Connect To DB
 
