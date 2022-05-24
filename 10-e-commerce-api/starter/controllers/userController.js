@@ -17,7 +17,7 @@ const getSingleUser = async (req, res) => {
         throw new CustomErr.NotFoundError(`No user found with id: ${id}`);
     }
 
-    checkPermission(user, id);
+    checkPermission(req, id);
     res.status(StatusCodes.OK).json(user);
 };
 
