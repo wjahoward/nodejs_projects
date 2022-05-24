@@ -7,9 +7,9 @@ const {
     updateUser,
     updateUserPassword
 } = require('../controllers/userController')
-const {authenticateUser, authorizePermission} = require('../middleware/authentication');
+const {authenticateUser, authorizePermissions} = require('../middleware/authentication');
 
-router.route('/').get(authenticateUser, authorizePermission, getAllUsers);
+router.route('/').get(authenticateUser, authorizePermissions('admin', 'owner'), getAllUsers);
 
 // order here is important
 // need to be before ':id'
