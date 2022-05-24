@@ -128,8 +128,8 @@
 
 #### ShowCurrentUser
 
-- [] get user from req
-- [] send response with user
+- [X] get user from req
+- [X] send response with user
 
 #### UpdateUserPassword
 
