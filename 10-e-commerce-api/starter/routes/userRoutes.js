@@ -10,6 +10,9 @@ const router = express.Router();
 
 router.route('/').get(getAllUsers);
 
+// order here is important
+// need to be before ':id'
+// otherwise the 'showMe' will be the 'id'
 router.route('/showMe').get(showCurrentUser);
 router.route('/updateUser').patch(updateUser);
 router.route('/updateUserPassword').patch(updateUserPassword);
