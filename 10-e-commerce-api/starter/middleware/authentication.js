@@ -23,6 +23,7 @@ const authenticateUser = async (req, res, next) => {
 };
 
 const authorizePermissions = (...roles) => { // this is when multiple user roles are allowed to do certain things
+    // need to include callback function
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
             throw new CustomErr.UnauthorizedError('Unauthorized to access route');
