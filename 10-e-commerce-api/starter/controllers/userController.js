@@ -40,13 +40,15 @@ const updateUserPassword = async (req, res) => { // /updateUserPassword
         throw new CustomErr.NotFoundError(`No such user with id ${user.userId}`);
     }
 
-    if (!user.comparePassword(oldPassword)) {
+    const isSame = await user.comparePassword(oldPassword);
+
+    if (!isSame) {
         throw new CustomErr.UnauthorizedError("Invalid password");
     }
 
     user.password = newPassword;
 
-    await user.save();
+    await user.save(); // this will make use of UserSchema pre 'save' function, which is why the password is hashed upon updating
     res.status(StatusCodes.OK).json({msg: 'Success! Password updated!'});
 };
 
