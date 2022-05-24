@@ -31,13 +31,19 @@ const updateUser = async (req, res) => {
         throw new CustomErr.BadRequestError("Please include name and email");
     }
 
-    const user = await User.findOneAndUpdate({
+    const user = await User.findOneAndUpdate({ // first approach of doing
         _id: req.user.userId,
         name: name,
         email: email, 
         new: true, 
         runValidators: true
     });
+
+    // alternative method
+    // user.name = name;
+    // user.email = email;
+
+    // await user.save();
 
     const tokenUser = createTokenUser(user);
     attachCookieToResponse(res, tokenUser);
