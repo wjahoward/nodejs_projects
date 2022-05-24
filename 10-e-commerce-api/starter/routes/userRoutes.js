@@ -15,7 +15,7 @@ router.route('/').get(authenticateUser, authorizePermissions('admin', 'owner'), 
 // need to be before ':id'
 // otherwise the 'showMe' will be the 'id'
 router.route('/showMe').get(authenticateUser, showCurrentUser);
-router.route('/updateUser').patch(updateUser);
+router.route('/updateUser').patch(authenticateUser, updateUser);
 router.route('/updateUserPassword').patch(authenticateUser, updateUserPassword);
 
 router.route('/:id')

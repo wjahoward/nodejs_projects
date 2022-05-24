@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const CustomErr = require("../errors");
 const User = require("../models/User");
+const { createTokenUser, attachCookieToResponse } = require("../utils");
 
 const getAllUsers = async (req, res) => {
     const users = await User.find({role: "user"}).select('-password'); // don't disclose password
@@ -24,7 +25,22 @@ const showCurrentUser = async (req, res) => { // /showMe
 };       
 
 const updateUser = async (req, res) => {
-    res.send("update user");
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+        throw new CustomErr.BadRequestError("Please include name and email");
+    }
+
+    const user = await User.findOneAndUpdate({
+        _id: req.user.userId,
+        name: name,
+        email: email, 
+        new: true, 
+        runValidators: true
+    });
+
+    const tokenUser = createTokenUser(user);
+    attachCookieToResponse(res, tokenUser);
 };
 
 const updateUserPassword = async (req, res) => { // /updateUserPassword
