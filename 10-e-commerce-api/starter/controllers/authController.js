@@ -48,8 +48,9 @@ const login = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
+    const isSame = await user.comparePassword(password);
 
-    if (password && !user.comparePassword(password)) {
+    if (password && !isSame) {
         throw new UnauthenticatedError("Invalid password");
     }
 
