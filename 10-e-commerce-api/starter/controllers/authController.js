@@ -3,7 +3,7 @@ require('dotenv').config();
 const User = require('../models/User');
 const {StatusCodes} = require('http-status-codes');
 const {BadRequestError, UnauthenticatedError} = require('../errors');
-const {attachCookieToResponse} = require("../utils");
+const {attachCookieToResponse, createTokenUser} = require("../utils");
 
 const register = async (req, res) => {
     const {
@@ -58,11 +58,7 @@ const login = async (req, res) => {
         throw new UnauthenticatedError("Invalid credentials");
     }
 
-    const tokenUser = {
-        name: user.name,
-        userId: user._id,
-        role: user.role
-    };
+    const tokenUser = createTokenUser(user);
 
     attachCookieToResponse(res, tokenUser);
 };
