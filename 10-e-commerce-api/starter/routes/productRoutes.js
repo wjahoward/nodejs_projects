@@ -18,7 +18,7 @@ router.route('/')
 // order of the routes here are important
 // need to be before ':id' route
 router.route('/uploadImage')
-    .post([authenticateUser, authorizePermissions('user')],
+    .post([authenticateUser, authorizePermissions('admin')],
     uploadImage);
 
 router.route('/:id')

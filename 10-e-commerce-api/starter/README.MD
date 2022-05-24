@@ -120,11 +120,11 @@
 
 #### Authorize Permissions Setup
 
-- [] hardcode
+- [X] hardcode
 
 #### Authorize Permissions Complete
 
-- [] introduce params
+- [X] introduce params
 
 #### ShowCurrentUser
 
@@ -164,37 +164,37 @@
 
 #### Product Model
 
-- [] create Product.js in models folder
-- [] create Schema
-- [] name : {type:String}
-- [] price: {type:Number}
-- [] description: {type:String}
-- [] image: {type:String}
-- [] category: {type:String}
-- [] company: {type:String}
-- [] colors: {type:[]}
-- [] featured: {type:Boolean}
-- [] freeShipping: {type:Boolean}
-- [] inventory:{type:Number}
-- [] averageRating:{type:Number}
-- [] user
-- [] set timestamps
-- [] export Product model
+- [X] create Product.js in models folder
+- [X] create Schema
+- [X] name : {type:String}
+- [X] price: {type:Number}
+- [X] description: {type:String}
+- [X] image: {type:String}
+- [X] category: {type:String}
+- [X] company: {type:String}
+- [X] colors: {type:[]}
+- [X] featured: {type:Boolean}
+- [X] freeShipping: {type:Boolean}
+- [X] inventory:{type:Number}
+- [X] averageRating:{type:Number}
+- [X] user
+- [X] set timestamps
+- [X] export Product model
 
 #### Product Structure
 
-- [] add productController file in controllers
-- [] export (createProduct, getAllProducts,
+- [X] add productController file in controllers
+- [X] export (createProduct, getAllProducts,
   getSingleProduct, updateProduct, deleteProduct, uploadImage) functions
-- [] res.send('function name')
-- [] setup productRoutes file in routes
-- [] import all controllers
-- [] only getAllProducts and getSingleProduct accessible to public
-- [] rest only by admin (setup middlewares)
-- [] typical setup
-- [] router.route('/uploadImage').post(uploadImage)
-- [] import productRoutes as productRouter in the app.js
-- [] setup app.use('/api/v1/products', productRouter)
+- [X] res.send('function name')
+- [X] setup productRoutes file in routes
+- [X] import all controllers
+- [X] only getAllProducts and getSingleProduct accessible to public
+- [X] rest only by admin (setup middlewares)
+- [X] typical setup
+- [X] router.route('/uploadImage').post(uploadImage)
+- [X] import productRoutes as productRouter in the app.js
+- [X] setup app.use('/api/v1/products', productRouter)
 
 #### Product Routes in Postman
 
