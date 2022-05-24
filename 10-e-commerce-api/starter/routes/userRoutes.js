@@ -1,14 +1,15 @@
+const express = require('express');
+const router = express.Router();
 const {
     getAllUsers,
     getSingleUser,
     showCurrentUser,
     updateUser,
     updateUserPassword
-} = require('../controllers/userController');
-const express = require('express');
-const router = express.Router();
+} = require('../controllers/userController')
+const {authenticateUser} = require('../middleware/authentication');
 
-router.route('/').get(getAllUsers);
+router.route('/').get(authenticateUser, getAllUsers);
 
 // order here is important
 // need to be before ':id'
@@ -18,6 +19,6 @@ router.route('/updateUser').patch(updateUser);
 router.route('/updateUserPassword').patch(updateUserPassword);
 
 router.route('/:id')
-    .get(getSingleUser);
+    .get(authenticateUser, getSingleUser);
 
 module.exports = router;

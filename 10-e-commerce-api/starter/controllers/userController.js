@@ -1,8 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
-const { NotFoundError } = require("../errors");
+const CustomErr = require("../errors");
 const User = require("../models/User");
 
 const getAllUsers = async (req, res) => {
+    console.log(req.user);
     const users = await User.find({role: "user"}).select('-password'); // don't disclose password
     res.status(StatusCodes.OK).json({count: users.length, users: users});
 };
@@ -12,7 +13,7 @@ const getSingleUser = async (req, res) => {
     const user = await User.findById(id).select('-password  ');
     
     if (!user) {
-        throw new NotFoundError(`No user found with id: ${id}`);
+        throw new CustomErr.NotFoundError(`No user found with id: ${id}`);
     }
 
     res.status(StatusCodes.OK).json(user);
