@@ -200,9 +200,9 @@
 
 #### Create Product
 
-- [] create user property on req.body and set it equal to userId (req.user)
-- [] pass req.body into Product.create
-- [] send back the product
+- [X] create user property on req.body and set it equal to userId (req.user)
+- [X] pass req.body into Product.create
+- [X] send back the product
 
 #### Remaining Controllers (apart from uploadImage)
 
