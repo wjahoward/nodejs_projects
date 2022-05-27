@@ -7,6 +7,7 @@ const app = express();
 // rest of the packages
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 
 // connect to db
 const connectDB = require('./db/connect');
@@ -23,6 +24,9 @@ const errorHandlerMiddlware = require('./middleware/error-handler');
 app.use(morgan('tiny')); // allows one to knoow which routes have been accessed
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET)); // access the cookie, want to pass in the secret to sign the cookies
+
+app.use(express.static('./public'));
+app.use(fileUpload());
 
 app.get('/', (req, res) => {
     return res.send("hi world");
