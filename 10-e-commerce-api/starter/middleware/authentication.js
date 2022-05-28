@@ -10,11 +10,11 @@ const authenticateUser = async (req, res, next) => {
 
     try {
         const payload = isTokenValid(token);
-        req.user = {
+        req.user = { 
             name: payload.name,
             userId: payload.userId,
             role: payload.role
-        }; // this variable is served as a 'global variable' across other routes once authenticated successfully
+        }; // this variable is served as a 'global variable' across other routes when user is being authentivated successfully
      
         next();
     } catch (err) {

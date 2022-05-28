@@ -16,7 +16,7 @@ const connectDB = require('./db/connect');
 const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes');
-const reviewRouter = require('./routes/reivewRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 
 // middlewares
 const notFoundMiddleware = require('./middleware/not-found');
