@@ -66,4 +66,11 @@ const ProductSchema = new mongoose.Schema({
     }
 );
 
+// delete the parent variable together with the foreign keys
+// for example, a product can have multiple reviews
+// if a product has been deleted, it makes sense that the reviews associated with that product are to be deleted as well
+ProductSchema.pre('remove', async function() { 
+    await this.model('Review').deleteMany({ product: this._id });
+});
+
 module.exports = mongoose.model('Product', ProductSchema);
