@@ -30,7 +30,19 @@ const createReview = async (req, res) => {
 };
 
 const getAllReviews = async (req, res) => {
-    const reviews = await Review.find();
+    // const reviews = await Review.find();
+
+    // if want to get other properties of that field (entity) i.e. i want to show the price and name of the product field
+    const reviews = await Review.find()
+                                .populate({
+                                    path: 'product',
+                                    select: 'name price'
+                                })
+                                .populate({
+                                    path: 'user',
+                                    select: 'email'
+                                });
+
     res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
 };
 
