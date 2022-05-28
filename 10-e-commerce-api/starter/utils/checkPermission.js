@@ -6,7 +6,7 @@ const CustomErr = require('../errors');
 const checkPermission = (currentUser, param_id) => {
     currentUser = currentUser.user;
     if (currentUser.role === 'admin' ||
-        currentUser.userId === param_id) {
+        currentUser.userId === param_id.toString()) {
         return;
     }
 
