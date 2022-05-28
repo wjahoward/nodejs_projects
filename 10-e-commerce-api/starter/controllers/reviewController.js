@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const CustomErr = require("../errors");
 const Product = require("../models/Product");
 const Review = require("../models/Review");
+const { checkPermission } = require("../utils");
 
 const createReview = async (req, res) => {
     const { product } = req.body;
@@ -29,20 +30,56 @@ const createReview = async (req, res) => {
 };
 
 const getAllReviews = async (req, res) => {
-    console.log(req);
-    res.send("get all reviews");
+    const reviews = await Review.find();
+    res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
 };
 
 const getSingleReview = async (req, res) => {
-    res.send("get single review");
+    const { id } = req.params;
+
+    const review = await Review.findById(id);
+
+    if (!review) {
+        throw new CustomErr.NotFoundError(`No review with id ${id} is found`);
+    }
+
+    res.status(StatusCodes.OK).json(review);
 };
 
 const updateReview = async (req, res) => {
-    res.send("update review");
+    const { id } = req.params;
+    const { rating, title, comment } = req.body;
+    req.body.user = req.user.userId;
+
+    const review = await Review.findById(id);
+
+    if (!review) {
+        throw new CustomErr.NotFoundError(`No reivew with id ${id} is found`);
+    }
+
+    checkPermission(req, review.user);
+
+    review.rating = rating;
+    review.title = title;
+    review.comment = comment;
+
+    await review.save();
+    res.status(StatusCodes.OK).json(review);
 };
 
 const deleteReview = async (req, res) => {
-    res.send("delete review");
+    const { id } = req.params;
+
+    const review = await Review.findById(id);
+
+    if (!review) {
+        throw new CustomErr.NotFoundError(`No reivew with id ${id} is found`);
+    }
+
+    checkPermission(req, review.user); // check if is the user is the same as the owner of that review, before deleting the review
+    await review.remove();
+
+    res.status(StatusCodes.OK).json({msg: "Success! Review removed"});
 };
 
 module.exports = {
