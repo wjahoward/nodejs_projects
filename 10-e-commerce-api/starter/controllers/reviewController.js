@@ -94,10 +94,17 @@ const deleteReview = async (req, res) => {
     res.status(StatusCodes.OK).json({msg: "Success! Review removed"});
 };
 
+const getSingleProductReviews = async (req, res) => {
+    const { id } = req.params;
+    const reviews = await Review.find({product: id});
+    res.status(StatusCodes.OK).json({length: reviews.length, data: reviews});
+}
+
 module.exports = {
     createReview,
     getAllReviews,
     getSingleReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getSingleProductReviews
 };
