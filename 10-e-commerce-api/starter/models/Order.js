@@ -29,7 +29,7 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    cartItems: [SingleCartItemSchema ],
+    cartItems: [SingleCartItemSchema],
     status: {
         type: String,
         enum: ['pending', 'failed', 'paid', 'delivered', 'cancelled'],
