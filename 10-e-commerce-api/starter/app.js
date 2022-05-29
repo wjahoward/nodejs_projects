@@ -8,6 +8,11 @@ const app = express();
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
+const rateLimiter = require('express-rate-limit');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const cors = require('cors');
+const mongoSanitizer = require('express-mongo-sanitize');
 
 // connect to db
 const connectDB = require('./db/connect');
@@ -22,6 +27,18 @@ const orderRouter = require('./routes/orderRoutes');
 // middlewares
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddlware = require('./middleware/error-handler');
+
+app.set('trust proxy', 1);
+app.use(
+    rateLimiter({
+        windowMs: 15 * 60 * 1000,
+        max: 60
+    })
+);
+app.use(helmet());
+app.use(cors());
+app.use(xss());
+app.use(mongoSanitizer());
 
 app.use(morgan('tiny')); // allows one to knoow which routes have been accessed
 app.use(express.json());
