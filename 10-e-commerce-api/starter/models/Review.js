@@ -47,12 +47,10 @@ ReviewSchema.statics.calculateAverageRating = async function (productId) {
         }}
     ]);
     try {
-        console.log("value " + result[0]?.averageRating);
-        console.log("numOfReviews: " + result[0]?.numOfReviews);
         await this.model('Product').findOneAndUpdate(
             { _id: productId },
             {
-                averageRating: Math.ceil(result[0]?.averageRating || 0),
+                averageRating: Math.ceil(result[0]?.averageRating || 0), // the '?' is included in case if there are no more reviews of that product
                 numOfReviews: result[0]?.numOfReviews || 0
 ,            }
         );
