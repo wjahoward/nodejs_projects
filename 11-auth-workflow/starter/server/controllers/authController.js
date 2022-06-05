@@ -44,6 +44,13 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new CustomError.UnauthenticatedError('Invalid Credentials');
   }
+
+  const isUserVerified = user.isVerified;
+
+  if (!isUserVerified) {
+    throw new CustomError.UnauthenticatedError('User has not been verified');
+  }
+
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
 
