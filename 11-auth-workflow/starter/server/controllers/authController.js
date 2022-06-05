@@ -2,7 +2,13 @@ const User = require('../models/User');
 const Token = require('../models/Token');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const { attachCookiesToResponse, createTokenUser, sendVerificationEmail } = require('../utils');
+const { 
+  attachCookiesToResponse, 
+  createTokenUser, 
+  sendVerificationEmail,
+  sendResetPasswordEmail
+} 
+= require('../utils');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 
@@ -89,10 +95,19 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 const logout = async (req, res) => {
-  res.cookie('token', 'logout', {
+
+  await Token.findOneAndDelete({user:req.user.userId});
+
+  res.cookie('accessToken', 'logout', {
     httpOnly: true,
-    expires: new Date(Date.now() + 1000),
+    expires: new Date(Date.now() ),
   });
+
+  res.cookie('refreshToken', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 
@@ -119,11 +134,42 @@ const verifyEmail = async (req, res) => {
   res.status(StatusCodes.OK).json({
     msg: 'Email verified'}
   );
-}
+};
+
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    throw new CustomError.BadRequestError('Please provide valid email');
+  }
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    const passwordToken = crypto.randomBytes(70).toString('hex');
+
+    // send email
+    const origin = 'http://localhot:5000';
+    await sendResetPasswordEmail({name: user.name, email: user.email, token: passwordToken, origin});
+
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+    user.passwordToken = passwordToken;
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+    await user.save();
+  }
+};
+
+const resetPassword = async (req, res) => {
+  res.send("reset password");
+};
 
 module.exports = {
   register,
   login,
   logout,
-  verifyEmail
+  verifyEmail,
+  forgotPassword,
+  resetPassword
 };
