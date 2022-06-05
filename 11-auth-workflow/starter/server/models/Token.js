@@ -13,7 +13,7 @@ const TokenSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isValud: {
+    isValid: {
         type: Boolean,
         default: true
     },
